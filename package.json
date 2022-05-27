@@ -1,0 +1,24 @@
+{
+  "name": "Cubicle-SoftUni",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VAPY05/Cubicle-SoftUni.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VAPY05/Cubicle-SoftUni/issues"
+  },
+  "homepage": "https://github.com/VAPY05/Cubicle-SoftUni#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.16"
+  }
+}
