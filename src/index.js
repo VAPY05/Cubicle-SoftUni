@@ -6,4 +6,4 @@ const port = 5000;
 app.get("/",(req,res)=>{
     res.send("Home")
 });
-app.listen(port)
+app.listen(port,()=>{console.log(`Server is listening on port ${port}`)})
