@@ -20,7 +20,15 @@ app.set('views','./src/views')
 
 
 app.get("/",(req,res)=>{
-    res.render("index", {cubes:database})
+    if(req.query.search || req.query.from || req.query.to){
+        let serachList = database;
+        if(req.query.search){
+        serachList = database.filter(x=>x.name.toLowerCase().startsWith(req.query.search))
+        }
+        res.render("index", {cubes:serachList})
+    }else{
+        res.render("index", {cubes:database})
+    }
 });
 
 app.get("/about",(req,res)=>{
