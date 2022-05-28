@@ -27,7 +27,7 @@ app.get("/create",(req,res)=>{
 });
 
 app.get("/details/:id",(req,res)=>{
-    res.render("index")
+    res.render("details")
 });
 
 app.get("*",(req,res)=>{
