@@ -18,15 +18,15 @@ app.set('views','./src/views')
 
 
 app.get("/",(req,res)=>{
-    if(req.query.search || req.query.from || req.query.to){
-        let serachList = database;
-        if(req.query.search){
-        serachList = database.filter(x=>x.name.toLowerCase().startsWith(req.query.search))
-        }
-        res.render("index", {cubes:serachList})
-    }else{
-        res.render("index", {cubes:database})
+    let entries = [...database];
+
+    if (req.query.search) {
+        entries = entries.filter(x=>x.name.toLowerCase().startsWith(req.query.search))
+    } else if (req.query.from && req.query.to) {
+        entries = entries.filter(x=>x.difficultyLevel >= req.query.from && x.difficultyLevel <= req.query.to);
     }
+
+    res.render("index", {cubes:entries})
 });
 
 app.get("/about",(req,res)=>{
