@@ -1,7 +1,5 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
-const { path } = require("express/lib/application");
-const { redirect } = require("express/lib/response");
 const database = require("./config/database.json")
 
 const app = express();
