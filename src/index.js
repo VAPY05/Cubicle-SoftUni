@@ -33,6 +33,7 @@ app.get("/create",(req,res)=>{
         req.query.id = database.length.toString()
         const newCube = req.query;
         database.push(newCube)
+        res.redirect("/")
     }
 });
 
