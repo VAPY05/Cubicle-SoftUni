@@ -1,6 +1,10 @@
 const express = require("express");
 const handlebars = require("express-handlebars");
 const database = require("./config/database.json")
+const mongoose = require('mongoose')
+
+mongoose.connect('mongodb://localhost:27017/test')
+const Cube = mongoose.model('Cube', { name: String, description: String, difficultyLevel: Number, imageUrl: String});
 
 const app = express();
 const port = 5000;
@@ -17,15 +21,18 @@ app.set('views','./src/views')
 
 
 
-app.get("/",(req,res)=>{
+app.get("/",async (req,res)=>{
     if(req.query.search || req.query.from || req.query.to){
         let serachList = database;
         if(req.query.search){
         serachList = database.filter(x=>x.name.toLowerCase().startsWith(req.query.search))
         }
+        
         res.render("index", {cubes:serachList})
     }else{
-        res.render("index", {cubes:database})
+        let response = JSON.stringify(await Cube.find().all())
+        //console.log(JSON.parse(response))
+        res.render("index", {cubes:JSON.parse(response)})
     }
 });
 
@@ -37,8 +44,11 @@ app.get("/create",(req,res)=>{
     res.render("create")
     if(req.query.name && req.query.description && req.query.imageUrl && req.query.difficultyLevel){
         req.query.id = database.length.toString()
-        const newCube = req.query;
-        database.push(newCube)
+        //const newCube = req.query;
+            
+        const newRubikCube = new Cube({ name: req.query.name, description: req.query.description, difficultyLevel: req.query.difficultyLevel, imageUrl: req.query.imageUrl});
+        newRubikCube.save().then(() => console.log('meow'));
+        //database.push(newCube)
         res.redirect("/")
     }
 });
