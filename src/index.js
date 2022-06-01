@@ -2,9 +2,11 @@ const express = require("express");
 const handlebars = require("express-handlebars");
 const database = require("./config/database.json")
 const mongoose = require('mongoose')
+const editCube = require('./controllers/edit.controller')
+const Cube = require('./models/cube.model')
 
 mongoose.connect('mongodb://localhost:27017/test')
-const Cube = mongoose.model('Cube', { name: String, description: String, difficultyLevel: Number, imageUrl: String});
+//const Cube = mongoose.model('Cube', { name: String, description: String, difficultyLevel: Number, imageUrl: String});
 
 const app = express();
 const port = 5000;
@@ -53,10 +55,22 @@ app.get("/create",(req,res)=>{
     }
 });
 
-app.get("/details/:id",(req,res)=>{
-    res.render("details",{cube: database[req.params.id]})
+app.get("/details/:id",async(req,res)=>{
+    let response = JSON.stringify(await Cube.findById(req.params.id));
+        //console.log(JSON.parse(response))
+        res.render("details",{cube: JSON.parse(response)})
     
 });
+
+app.get("/edit/:id",async(req,res)=>{
+    let response = JSON.stringify(await Cube.findById(req.params.id));
+    res.render("edit",{data: JSON.parse(response)})
+})
+
+app.post("/edit/:id", (req,res)=>{
+    editCube(req)
+    res.redirect("/")
+})
 
 app.get("*",(req,res)=>{
     res.render("404")
