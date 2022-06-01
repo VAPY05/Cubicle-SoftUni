@@ -3,7 +3,7 @@ const handlebars = require("express-handlebars");
 const database = require("./config/database.json")
 const mongoose = require('mongoose')
 const editCube = require('./controllers/edit.controller')
-const Cube = require('./models/cube.model')
+const Cube = require('./models/cube.model');
 
 mongoose.connect('mongodb://localhost:27017/test')
 //const Cube = mongoose.model('Cube', { name: String, description: String, difficultyLevel: Number, imageUrl: String});
@@ -25,14 +25,16 @@ app.set('views','./src/views')
 
 app.get("/",async (req,res)=>{
     if(req.query.search || req.query.from || req.query.to){
-        let serachList = database;
+        //let serachList = database;
+        let response = JSON.stringify(await Cube.find().all())
+        response = JSON.parse(response)
         if(req.query.search){
-        serachList = database.filter(x=>x.name.toLowerCase().startsWith(req.query.search))
+        serachList = response.filter(x=>x.name.toLowerCase().startsWith(req.query.search))
         }
         
         res.render("index", {cubes:serachList})
     }else{
-        let response = JSON.stringify(await Cube.find().all())
+        response = JSON.stringify(await Cube.find().all())
         res.render("index", {cubes:JSON.parse(response)})
     }
 });
