@@ -33,7 +33,6 @@ app.get("/",async (req,res)=>{
         res.render("index", {cubes:serachList})
     }else{
         let response = JSON.stringify(await Cube.find().all())
-        //console.log(JSON.parse(response))
         res.render("index", {cubes:JSON.parse(response)})
     }
 });
@@ -46,11 +45,9 @@ app.get("/create",(req,res)=>{
     res.render("create")
     if(req.query.name && req.query.description && req.query.imageUrl && req.query.difficultyLevel){
         req.query.id = database.length.toString()
-        //const newCube = req.query;
             
         const newRubikCube = new Cube({ name: req.query.name, description: req.query.description, difficultyLevel: req.query.difficultyLevel, imageUrl: req.query.imageUrl});
-        newRubikCube.save().then(() => console.log('meow'));
-        //database.push(newCube)
+        newRubikCube.save()
         res.redirect("/")
     }
 });
